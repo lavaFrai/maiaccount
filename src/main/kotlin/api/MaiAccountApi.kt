@@ -46,7 +46,8 @@ class MaiAccountApi(private val credentials: Credentials) {
     companion object {
         val client = HttpClient(CIO) {
             this.install(HttpTimeout) {
-                requestTimeoutMillis = 32*1000
+                requestTimeoutMillis = 64*1000
+                connectTimeoutMillis = 64*1000
             }
         }
 
