@@ -12,10 +12,7 @@ import kotlinx.serialization.json.Json
 import org.jsoup.Jsoup
 import ru.lavafrai.mai.api.exceptions.AuthenticationServerException
 import ru.lavafrai.mai.api.exceptions.InvalidLoginOrPasswordException
-import ru.lavafrai.mai.api.models.Applicants
-import ru.lavafrai.mai.api.models.Credentials
-import ru.lavafrai.mai.api.models.StudentInfo
-import ru.lavafrai.mai.api.models.StudentMarks
+import ru.lavafrai.mai.api.models.*
 
 class MaiAccountApi(private val credentials: Credentials) {
     private suspend inline fun <reified T>method(methodName: String, urlQueryParams: Map<String, String> = mapOf()): T {
@@ -41,6 +38,7 @@ class MaiAccountApi(private val credentials: Credentials) {
     suspend fun studentInfo() = method<StudentInfo>("/api_student/students/info/")
     suspend fun studentMarks(studentCode: String) = method<StudentMarks>("/api_student/students/grades/", urlQueryParams = mapOf("student_code" to studentCode))
     suspend fun applicants() = method<Applicants>("/api_abit/applicants/")
+    suspend fun certificates() = method<Certificates>("/api_services/get_certificates")
     suspend fun person() = applicants().person
 
     companion object {
