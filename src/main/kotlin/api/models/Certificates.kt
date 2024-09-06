@@ -5,5 +5,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Certificates(
-    @SerialName("certificates") val certificates: List<Certificate>?,
+    @SerialName("certificates") val certificates: List<Certificate>? = null,
 )
