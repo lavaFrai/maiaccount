@@ -8,6 +8,7 @@ import io.ktor.client.request.forms.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.util.*
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import org.jsoup.Jsoup
 import ru.lavafrai.mai.api.exceptions.AuthenticationServerException
@@ -38,7 +39,14 @@ class MaiAccountApi(private val credentials: Credentials) {
     suspend fun studentInfo() = method<StudentInfo>("/api_student/students/info/")
     suspend fun studentMarks(studentCode: String) = method<StudentMarks>("/api_student/students/grades/", urlQueryParams = mapOf("student_code" to studentCode))
     suspend fun applicants() = method<Applicants>("/api_abit/applicants/")
-    suspend fun certificates() = method<Certificates>("/api_services/get_certificates")
+    suspend fun certificates(): List<Certificate> {
+        return try {
+            method<Certificates>("/api_services/get_certificates").certificates
+        }
+        catch (e: SerializationException) {
+            listOf()
+        }
+    }
     suspend fun person() = applicants().person
 
     companion object {
